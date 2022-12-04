@@ -1,0 +1,31 @@
+function listarArquivos(){
+  
+  var pasta_id = '1lcWNSqNt0LLwj-YGAeZQUaupE7TUeEEH'
+  var pagina_nome = 'Arquivos'
+
+  let pagina = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(pagina_nome)
+
+  try {
+    var pasta = DriveApp.getFolderById(pasta_id);
+    
+    arr = []
+    let arquivos = pasta.getFiles();
+    while (arquivos.hasNext()) {
+      
+      let arquivo = arquivos.next();
+      
+      dados = [ 
+        pasta.getName(),
+        arquivo.getName(),
+        arquivo.getId(),
+        arquivo.getUrl()
+      ]
+      arr.push(dados)
+    }
+
+    pagina.getRange(pagina.getLastRow()+1, 1, arr.length, 4).setValues(arr)
+
+  } catch (e) {
+    console.log(e.toString())
+  }
+}
